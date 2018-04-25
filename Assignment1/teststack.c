@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include "stack.h"
 
-int main()
-{
+int main() {
     intstack_t stack;
 
     stackInit(&stack);

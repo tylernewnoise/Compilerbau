@@ -1,18 +1,15 @@
 #include <stdio.h>
 #include "syntree.h"
 
-int main()
-{
+int main() {
     syntree_t tree;
     syntree_nid id;
 
     syntreeInit(&tree);
 
     id = syntreeNodeTag(&tree, syntreeNodeNumber(&tree, 0));
-    for (unsigned int i = 1; i < 10; ++i)
-    {
-        switch (i % 3)
-        {
+    for (unsigned int i = 1; i < 10; ++i) {
+        switch (i % 3) {
             case 0:
                 id = syntreeNodePair(&tree, syntreeNodeNumber(&tree, i), id);
                 break;

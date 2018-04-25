@@ -7,8 +7,7 @@ typedef /* muss noch definiert werden */ syntree_nid;
 
 /**@brief Struktur des abstrakten Syntaxbaumes.
  */
-typedef struct
-{
+typedef struct {
     /* hier sollte noch etwas dazu kommen */
 } syntree_t;
 
@@ -20,13 +19,13 @@ typedef struct
  *      != 0 ansonsten
  */
 extern int
-syntreeInit(syntree_t* self);
+syntreeInit(syntree_t *self);
 
 /**@brief Gibt den Syntaxbaum und alle assoziierten Strukturen frei.
  * @param self  der freizugebende Syntaxbaum
  */
 extern void
-syntreeRelease(syntree_t* self);
+syntreeRelease(syntree_t *self);
 
 /**@brief Erstellt einen neuen Knoten mit einem Zahlenwert als Inhalt.
  * @param self    der Syntaxbaum
@@ -34,7 +33,7 @@ syntreeRelease(syntree_t* self);
  * @return ID des neu erstellten Knoten
  */
 extern syntree_nid
-syntreeNodeNumber(syntree_t* self, int number);
+syntreeNodeNumber(syntree_t *self, int number);
 
 /**@brief Kapselt einen Knoten innerhalb eines anderen Knotens.
  * @param self  der Syntaxbaum
@@ -42,7 +41,7 @@ syntreeNodeNumber(syntree_t* self, int number);
  * @return ID des neu erstellten Knoten
  */
 extern syntree_nid
-syntreeNodeTag(syntree_t* self, syntree_nid id);
+syntreeNodeTag(syntree_t *self, syntree_nid id);
 
 /**@brief Kapselt zwei Knoten innerhalb eines Knoten.
  * @param self  der Syntaxbaum
@@ -51,7 +50,7 @@ syntreeNodeTag(syntree_t* self, syntree_nid id);
  * @return ID des neu erstellten Knoten
  */
 extern syntree_nid
-syntreeNodePair(syntree_t* self, syntree_nid id1, syntree_nid id2);
+syntreeNodePair(syntree_t *self, syntree_nid id1, syntree_nid id2);
 
 /**@brief Hängt einen Knoten an das Ende eines Listenknotens.
  * @param self  der Syntaxbaum
@@ -60,7 +59,7 @@ syntreeNodePair(syntree_t* self, syntree_nid id1, syntree_nid id2);
  * @return ID des Listenknoten
  */
 extern syntree_nid
-syntreeNodeAppend(syntree_t* self, syntree_nid list, syntree_nid elem);
+syntreeNodeAppend(syntree_t *self, syntree_nid list, syntree_nid elem);
 
 /**@brief Hängt einen Knoten an den Anfang eines Listenknotens.
  * @param self  der Syntaxbaum
@@ -69,13 +68,13 @@ syntreeNodeAppend(syntree_t* self, syntree_nid list, syntree_nid elem);
  * @return ID des Listenknoten
  */
 extern syntree_nid
-syntreeNodePrepend(syntree_t* self, syntree_nid elem, syntree_nid list);
+syntreeNodePrepend(syntree_t *self, syntree_nid elem, syntree_nid list);
 
 /**@brief Gibt alle Zahlenknoten rekursiv (depth-first) aus.
  * @param self  der Syntaxbaum
  * @param root  der Wurzelknoten
  */
 extern void
-syntreePrint(const syntree_t* self, syntree_nid root);
+syntreePrint(const syntree_t *self, syntree_nid root);
 
 #endif /* SYNTREE_H_INCLUDED */
