@@ -1,10 +1,10 @@
-####Aufgabe 1
+#### Aufgabe 1
 
-#####Kurzbeschreibung
+##### Kurzbeschreibung
 
 Implementieren Sie einen Stack, der beliebig viele Integerzahlen speichern kann ("beliebig viel" bedeutet für uns: lediglich begrenzt durch den Arbeitsspeicher). Erweitern Sie dabei eine vorgegebene Schnittstelle, so dass Ihr Stack in andere (bereits existierende) Programme eingebunden werden kann.
 
-#####Aufgabenstellung
+##### Aufgabenstellung
 
 Bereits im C-Einführungskurs wurden Sie mit der Aufgabe betraut, einen Stack zu implementieren, so dass wir hier auf eine erneute, ausführliche Beschreibung verzichten wollen. Wie Sie in der gegebenen Headerdatei `stack.h` sehen können, betrachten wir einen Stack als eine Datenstruktur, auf der folgende Operationen ausgeführt werden können:
 * `int stackInit(intstack_t* self)`  
@@ -27,12 +27,12 @@ Zusätzlich stellen wir Ihnen ein Makefile und ein Testprogramm in der Datei `te
 
 Noch ein Hinweis: Sie werden feststellen, dass in der Datei `stack.h` eine Funktion namens `stackPrint()` deklariert wurde. Es steht Ihnen frei diese Funktion zu Testzwecken zu implementieren.
 
-####Aufgabe 2
+#### Aufgabe 2
 
-#####Kurzbeschreibung
+##### Kurzbeschreibung
 Implementieren Sie eine Datenstruktur, die beliebig verzweigte Bäume speichern kann, mit den im Folgenden beschriebenen Methoden.
 
-#####Aufgabenstellung
+##### Aufgabenstellung
 Diese Aufgabe stellt eine der Grundlagen für den später zu implementierenden Praktikumsinterpreter dar. Die hier von Ihnen zu implementierende Datenstruktur werden Sie bei der Konstruktion des abstrakten Syntaxbaumes benötigen, da uns die Bordmittel von C keine wirkliche Hilfe leisten.
 
 Die zu implementierende Datenstruktur `syntree_t` soll Baumknoten in beliebig komplexen Konfigurationen speichern können und davon beliebig viele. Beschreiben Sie die Implementation Ihrer Datenstruktur kurz in einem Programmkommentar am Anfang der Headerdatei. Implementieren Sie dann die folgenden Operationen:
