@@ -5,11 +5,9 @@
 
 /**@brief Struktur des Stacks.
  */
-typedef struct {
+typedef struct Node{
     int value;
-    struct intstack_t *previous;
-    struct intstack_t *post;
-    /* hier sollte noch etwas dazu kommen */
+    struct Node *previous_element;
 } intstack_t;
 
 /* *** interface ************************************************************ */

@@ -6,14 +6,23 @@ int main() {
 
     stackInit(&stack);
 
-    stackPush(&stack, 1);
-    stackPush(&stack, 2);
-    stackPush(&stack, 3);
+    if (stackIsEmpty(&stack))
+        printf("STACK IS EMPTY\n");
 
-    while (!stackIsEmpty(&stack))
+    stackPush(&stack, 1);
+    printf("%i ist das letzte Element\n", stackTop(&stack));
+    stackPush(&stack, 2);
+    printf("%i ist das letzte Element\n", stackTop(&stack));
+    stackPush(&stack, 3);
+    printf("%i ist das letzte Element\n", stackTop(&stack));
+
+    printf("Letztes Element %i gepoppt\n", stackPop(&stack));
+    printf("%i ist das letzte Element\n", stackTop(&stack));
+
+/*    while (!stackIsEmpty(&stack))
         printf("%i\n", stackPop(&stack));
 
-    stackPop(&stack);
+    stackPop(&stack);*/
 
     stackRelease(&stack);
     return 0;
