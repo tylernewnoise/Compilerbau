@@ -53,5 +53,14 @@ extern int stackIsEmpty(const intstack_t *stack) {
 }
 
 extern void stackPrint(const intstack_t *stack) {
-    // TODO
+    if (stackIsEmpty(stack)){
+        printf("Stack is empty.\n");
+        return;
+    }
+    struct node *tmp;
+    tmp = stack->current_element;
+    while (tmp != NULL) {
+        printf("%i \n", tmp->value);
+        tmp = tmp->previous_element;
+    }
 }

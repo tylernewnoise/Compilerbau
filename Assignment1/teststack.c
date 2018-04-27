@@ -16,6 +16,7 @@ int main() {
     stackPush(&stack, 3);
     printf("%i ist das letzte Element\n", stackTop(&stack));
 
+    stackPrint(&stack);
     printf("Letztes Element %i gepoppt\n", stackPop(&stack));
     printf("%i ist das letzte Element\n", stackTop(&stack));
 
@@ -24,7 +25,10 @@ int main() {
 
     stackPop(&stack);*/
 
+    stackPrint(&stack);
     stackRelease(&stack);
+    stackRelease(&stack);
+    stackPrint(&stack);
     return 0;
 }
 
