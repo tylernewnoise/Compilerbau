@@ -37,7 +37,7 @@ extern int stackPop(intstack_t *stack) {
         fprintf(stderr, "No more elements on the stack!\n");
         exit(EXIT_FAILURE);
     }
-    struct node *tmp;// = malloc(sizeof(struct node));
+    struct node *tmp;
     int ret = stack->current_element->value;
     tmp = stack->current_element;
     stack->current_element = tmp->previous_element;
