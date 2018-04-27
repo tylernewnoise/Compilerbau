@@ -2,65 +2,56 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int stackInit(intstack_t *stack) {
-    intstack_t *tmp = malloc(sizeof(intstack_t));
-    if (tmp == NULL) {
-        fprintf(stderr, "Out of Memory!");
-        return 1;
-    }
-    tmp->previous_element = NULL;
-    tmp->value = 666; //TODO remove
-    *stack = *tmp;
+extern int stackInit(intstack_t *stack) {
+    stack->current_element = NULL;
     return 0;
 }
 
-void stackRelease(intstack_t *stack) {
-
+extern void stackRelease(intstack_t *stack) {
+    while (stack->current_element != NULL) {
+        struct node *tmp;
+        tmp = stack->current_element;
+        stack->current_element = tmp->previous_element;
+        free(tmp);
+    }
 }
 
-void stackPush(intstack_t *stack, int i) {
-    intstack_t *tmp = malloc(sizeof(intstack_t));
-    if (tmp == NULL) {
-        fprintf(stderr, "Out of Memory!");
-        //TODO free all Memory
-        exit(0);
+extern void stackPush(intstack_t *stack, int i) {
+    struct node *new_element = malloc(sizeof(struct node));
+    if (new_element == NULL) {
+        fprintf(stderr, "Out of Memory!\n");
+        stackRelease(stack);
+        exit(EXIT_FAILURE);
     }
-    tmp->value = i;
-    tmp->previous_element = stack;
-    *stack = *tmp;
+    new_element->value = i;
+    new_element->previous_element = stack->current_element;
+    stack->current_element = new_element;
 }
 
-int stackTop(const intstack_t *stack) {
-    return stack->value;
+extern int stackTop(const intstack_t *stack) {
+    return stack->current_element->value;
 }
 
-int stackPop(intstack_t *stack) {
-    if (stack->previous_element == NULL) {
-        fprintf(stderr, "No more elements on the stack!");
-        //TODO free all Memory
-        exit(0);
+extern int stackPop(intstack_t *stack) {
+    if (stack->current_element == NULL) {
+        fprintf(stderr, "No more elements on the stack!\n");
+        exit(EXIT_FAILURE);
     }
-
-    intstack_t *tmp = malloc(sizeof(intstack_t));
-    if (tmp == NULL) {
-        fprintf(stderr, "Out of Memory!");
-        exit(0);
-    }
-    //int ret = stack->value;
-    *tmp = *stack;
-    int ret = tmp->value;
-    // ....
+    struct node *tmp;// = malloc(sizeof(struct node));
+    int ret = stack->current_element->value;
+    tmp = stack->current_element;
+    stack->current_element = tmp->previous_element;
     free(tmp);
     return ret;
 }
 
-int stackIsEmpty(const intstack_t *stack) {
-    if (stack->previous_element == NULL)
+extern int stackIsEmpty(const intstack_t *stack) {
+    if (stack->current_element == NULL)
         return 1;
     else
         return 0;
 }
 
-void stackPrint(const intstack_t *stack) {
-
+extern void stackPrint(const intstack_t *stack) {
+    // TODO
 }
