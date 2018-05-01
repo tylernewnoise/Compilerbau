@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "syntree.h"
 
 int main() {
@@ -21,6 +20,7 @@ int main() {
             case 2:
                 id = syntreeNodePrepend(&tree, syntreeNodeNumber(&tree, i), id);
                 break;
+            default:break;
         }
     }
 
