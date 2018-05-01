@@ -3,7 +3,10 @@
 
 /* *** structures *********************************************************** */
 
-typedef /* muss noch definiert werden */ syntree_nid;
+typedef struct nid{
+    /* muss noch definiert werden */
+} syntree_nid;
+
 
 /**@brief Struktur des abstrakten Syntaxbaumes.
  */
