@@ -2,6 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+struct node {
+    int value;
+    struct node *previous_element;
+};
+
 extern int stackInit(intstack_t *stack) {
     stack->current_element = NULL;
     return 0;
@@ -53,7 +58,7 @@ extern int stackIsEmpty(const intstack_t *stack) {
 }
 
 extern void stackPrint(const intstack_t *stack) {
-    if (stackIsEmpty(stack)){
+    if (stackIsEmpty(stack)) {
         printf("Stack is empty.\n");
         return;
     }
