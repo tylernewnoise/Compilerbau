@@ -2,16 +2,33 @@
 #define SYNTREE_H_INCLUDED
 
 /* *** structures *********************************************************** */
-
-typedef struct nid{
-    /* muss noch definiert werden */
-} syntree_nid;
-
-
 /**@brief Struktur des abstrakten Syntaxbaumes.
  */
+// id des knotens, einfach ne zahl;
+typedef unsigned int syntree_nid;
+
+// liste für knoten
+struct list_of_nodes;
+
+// definition vom knoten. der knoten kann entweder einen wert enthalten, oder aber
+// weitere knoten (kapselung) und somit eine liste
+struct Node {
+    syntree_nid node_id; //id vom knoten
+    union {
+        int value;
+        struct list_of_nodes *next;
+    } content;
+};
+
+// klassische einfach verkettete Liste. Die Elemente sind die Knoten und ein Zeiger auf das nächste Element.
+struct list_of_nodes {
+    struct Node *element;
+    struct list_of_nodes *next;
+};
+
+// der eigentliche Baum
 typedef struct {
-    /* hier sollte noch etwas dazu kommen */
+    struct list_of_nodes *nodes;
 } syntree_t;
 
 /* *** interface ************************************************************ */
