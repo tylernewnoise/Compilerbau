@@ -4,8 +4,13 @@
 /* *** structures *********************************************************** */
 /**@brief Struktur des abstrakten Syntaxbaumes.
  */
-// ID eines Knotens, einfach eine ganze positive Zahl
-typedef unsigned int syntree_nid;
+// ID eines Knotens, dargestellt durch eine verkettete Liste. Die Listenknoten
+// enthalten dabei Zeiger auf die Knoten. Die Zeiger sind dann die ID.
+
+typedef struct syntree_nid {
+    struct Node *node_id;
+    struct syntree_nid *next_id;
+} syntree_nid;
 
 // der eigentliche Baum
 typedef struct {

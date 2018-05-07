@@ -1,12 +1,19 @@
 #include "syntree.h"
+#include <stdio.h>
 
 int main() {
     syntree_t tree;
     syntree_nid id;
 
     syntreeInit(&tree);
-
-    id = syntreeNodeTag(&tree, syntreeNodeNumber(&tree, 0));
+    id = syntreeNodeNumber(&tree, 0);
+    printf("%p \n", id);
+    id = syntreeNodeNumber(&tree, 2);
+    printf("%p \n", id);
+    id = syntreeNodeNumber(&tree, 3);
+    printf("%p \n", id);
+    //id = syntreeNodeTag(&tree, syntreeNodeNumber(&tree, 0));
+/*
     for (unsigned int i = 1; i < 10; ++i) {
         switch (i % 3) {
             case 0:
@@ -25,8 +32,8 @@ int main() {
     }
 
     syntreePrint(&tree, id);
-    syntreeRelease(&tree);
-
+    syntreeRelease(&tree);*/
+    printf("survived\n");
     return 0;
 }
 
