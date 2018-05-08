@@ -35,6 +35,7 @@ extern int stackTop(const intstack_t *stack) {
 extern int stackPop(intstack_t *stack) {
     if (stack->current_element == NULL) {
         fprintf(stderr, "No more elements on the stack!\n");
+        stackRelease(stack);
         exit(EXIT_FAILURE);
     }
     struct node *tmp;
