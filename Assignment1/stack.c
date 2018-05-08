@@ -3,6 +3,9 @@
 #include <stdlib.h>
 
 extern int stackInit(intstack_t *stack) {
+    if (!stack) {
+        return 1;
+    }
     stack->current_element = NULL;
     return 0;
 }
@@ -54,7 +57,7 @@ extern int stackIsEmpty(const intstack_t *stack) {
 }
 
 extern void stackPrint(const intstack_t *stack) {
-    if (stackIsEmpty(stack)){
+    if (stackIsEmpty(stack)) {
         printf("Stack is empty.\n");
         return;
     }
