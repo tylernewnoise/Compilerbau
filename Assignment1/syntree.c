@@ -1,19 +1,11 @@
 #include "syntree.h"
 #include <stdlib.h>
-#include <mhash.h>
-
-struct node {
-    union {
-        int value;
-        struct nodes_list *kid;
-    } content;
-};
+#include <stdio.h>
 
 struct nodes_list {
-    struct node *element;
+    syntree_nid *element;
     struct nodes_list *next;
 };
-
 
 extern int syntreeInit(syntree_t *syntree) {
     if (!syntree) {
@@ -22,11 +14,8 @@ extern int syntreeInit(syntree_t *syntree) {
     return 0;
 }
 
-extern void syntreeRelease(syntree_t *syntree) {
-}
-
 extern syntree_nid syntreeNodeNumber(syntree_t *syntree, int number) {
-    struct node *new_value_node = malloc(sizeof(struct node));
+    syntree_nid *new_value_node = malloc(sizeof(syntree_nid));
     struct nodes_list *new_nodes_list = malloc(sizeof(struct nodes_list));
     if (!new_value_node || !new_nodes_list) {
         fprintf(stderr, "Error: out of Memory!\n");
@@ -36,8 +25,12 @@ extern syntree_nid syntreeNodeNumber(syntree_t *syntree, int number) {
     new_nodes_list->element = new_value_node;
     new_nodes_list->next = syntree->next;
     syntree->next = new_nodes_list;
-    syntree_nid *tmp;
-    return *tmp;
+    return *new_value_node;
+}
+
+
+/*
+extern void syntreeRelease(syntree_t *syntree) {
 }
 
 extern syntree_nid syntreeNodeTag(syntree_t *syntree, syntree_nid id) {
@@ -51,3 +44,5 @@ extern syntree_nid syntreeNodeAppend(syntree_t *syntree, syntree_nid list, syntr
 
 extern void syntreePrint(const syntree_t *self, syntree_nid root) {
 }
+*/
+

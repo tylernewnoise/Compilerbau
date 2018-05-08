@@ -5,7 +5,10 @@
 /**@brief Struktur des abstrakten Syntaxbaumes.
  */
 typedef struct syntree_nid {
-    // no fuckin idea
+    union {
+        int value;
+        struct nodes_list *kid;
+    } content;
 } syntree_nid;
 
 typedef struct {

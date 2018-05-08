@@ -6,14 +6,11 @@ int main() {
     syntree_nid id;
 
     syntreeInit(&tree);
-    //id = syntreeNodeNumber(&tree, 666);
-    syntreeNodeNumber(&tree, 666);
+    id = syntreeNodeNumber(&tree, 666);
     printf("%p \n", id);
-    //id = syntreeNodeNumber(&tree, 1337);
-    syntreeNodeNumber(&tree, 1337);
+    id = syntreeNodeNumber(&tree, 1337);
     printf("%p \n", id);
-    syntreeNodeNumber(&tree, 731);
-    //id = syntreeNodeNumber(&tree, 731);
+    id = syntreeNodeNumber(&tree, 731);
     printf("%p \n", id);
     //id = syntreeNodeTag(&tree, syntreeNodeNumber(&tree, 0));
 /*
@@ -36,7 +33,7 @@ int main() {
 
     syntreePrint(&tree, id);
     syntreeRelease(&tree);*/
-    printf("survived\n");
+    printf("end\n");
     return 0;
 }
 
