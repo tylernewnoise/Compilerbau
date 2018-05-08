@@ -7,10 +7,13 @@ int main() {
 
     syntreeInit(&tree);
     id = syntreeNodeNumber(&tree, 666);
+    syntreePrint(&tree, id);
     printf("%p \n", id);
     id = syntreeNodeNumber(&tree, 1337);
+    syntreePrint(&tree, id);
     printf("%p \n", id);
     id = syntreeNodeNumber(&tree, 731);
+    syntreePrint(&tree, id);
     printf("%p \n", id);
     //id = syntreeNodeTag(&tree, syntreeNodeNumber(&tree, 0));
 /*
@@ -33,7 +36,7 @@ int main() {
 
     syntreePrint(&tree, id);
     syntreeRelease(&tree);*/
-    printf("end\n");
+    printf("Durchgelaufen!\n");
     return 0;
 }
 
