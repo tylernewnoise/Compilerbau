@@ -4,13 +4,26 @@
 /* *** structures *********************************************************** */
 /**@brief Struktur des abstrakten Syntaxbaumes.
  */
+// Ein enum um einen Typen zu deklarieren um die Knoten unterscheiden zu
+// können.
+typedef enum {
+    value, list
+} bool;
+
+// Der eigentliche Knoten. Die ID des Knotens ist dabei seine Adresse im RAM.
+// Durch den type wird festgelegt, ob es sich um einen "Kapselknoten" oder
+// einen Knoten mit einem Integer handelt. Ist es ein Kapselknoten, so erhält er
+// einen Zeiger auf eine Liste.
 typedef struct syntree_nid {
+    bool type;
     union {
-        int value;
+        int data;
         struct nodes_list *kid;
     } content;
 } syntree_nid;
 
+// Die Grundstruktur des Baumes. Sie enthält einfach nur einen Zeiger zu einer
+// Liste, in der alle Knoten hängen.
 typedef struct {
     struct nodes_list *next;
 } syntree_t;
