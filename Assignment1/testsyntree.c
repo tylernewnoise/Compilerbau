@@ -21,6 +21,8 @@ int main() {
             case 2:
                 id = syntreeNodePrepend(&tree, syntreeNodeNumber(&tree, i), id);
                 break;
+            default:
+                break;
         }
     }
 
