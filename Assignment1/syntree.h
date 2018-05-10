@@ -11,21 +11,24 @@ typedef enum {
 } bool;
 
 // Der eigentliche Knoten. Die ID des Knotens ist dabei seine Adresse im RAM.
-// Durch den type wird festgelegt, ob es sich um einen "Kapselknoten" oder
-// einen Knoten mit einem Integer handelt. Ist es ein Kapselknoten, so erhält er
-// einen Zeiger auf eine Liste.
+// Durch number wird festgelegt, ob es sich um einen "Kapselknoten" (number =
+// not_set = INT_MIN) oder
+// einen Knoten mit einem Integer handelt (number > INT_MIN).
+// capsuled ist das erste Element einer einfach verketteten Liste, die
+// "gekapselte" Knoten enthalten. next ist das erste Element einer einfach
+// verketteten Liste, die auf die Elemente auf gleicher "Ebene" zeigt.
+
 typedef struct syntree_nid {
-    bool type;
-    union {
-        int data;
-        struct nodes_list *kid;
-    } content;
-} syntree_nid;
+    int number;
+    struct syntree_nid *pointer;
+    struct syntree_nid *next;
+    struct syntree_nid *capsuled;
+}syntree_nid;
 
 // Die Grundstruktur des Baumes. Sie enthält einfach nur einen Zeiger zu einer
 // Liste, in der alle Knoten hängen.
 typedef struct {
-    struct nodes_list *next;
+    struct syntree_nid *root;
 } syntree_t;
 
 /* *** interface ************************************************************ */
