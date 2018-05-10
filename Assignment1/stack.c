@@ -2,6 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+struct node {
+    int value;
+    struct node *previous_element;
+};
+
 extern int stackInit(intstack_t *stack) {
     if (!stack) {
         return 1;

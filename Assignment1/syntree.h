@@ -2,13 +2,33 @@
 #define SYNTREE_H_INCLUDED
 
 /* *** structures *********************************************************** */
-
-typedef /* muss noch definiert werden */ syntree_nid;
-
 /**@brief Struktur des abstrakten Syntaxbaumes.
  */
+// Ein enum um einen Typen zu deklarieren um die Knoten unterscheiden zu
+// können.
+typedef enum {
+    value, list
+} bool;
+
+// Der eigentliche Knoten. Die ID des Knotens ist dabei seine Adresse im RAM.
+// Durch number wird festgelegt, ob es sich um einen "Kapselknoten" (number =
+// not_set = INT_MIN) oder
+// einen Knoten mit einem Integer handelt (number > INT_MIN).
+// capsuled ist das erste Element einer einfach verketteten Liste, die
+// "gekapselte" Knoten enthalten. next ist das erste Element einer einfach
+// verketteten Liste, die auf die Elemente auf gleicher "Ebene" zeigt.
+
+typedef struct syntree_nid {
+    int number;
+    struct syntree_nid *pointer;
+    struct syntree_nid *next;
+    struct syntree_nid *capsuled;
+}syntree_nid;
+
+// Die Grundstruktur des Baumes. Sie enthält einfach nur einen Zeiger zu einer
+// Liste, in der alle Knoten hängen.
 typedef struct {
-    /* hier sollte noch etwas dazu kommen */
+    struct syntree_nid *root;
 } syntree_t;
 
 /* *** interface ************************************************************ */
