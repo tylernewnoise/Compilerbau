@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <limits.h>
 
-#define not_set INT_MIN
-
 
 extern int syntreeInit(syntree_t *syntree) {
     if (! syntree) {
@@ -18,9 +16,11 @@ extern syntree_nid syntreeNodeNumber(syntree_t *syntree, int number) {
     syntree_nid *new_node_ptr = malloc(sizeof(syntree_nid));
     if (! new_node_ptr) {
         fprintf(stderr, "Error: out of Memory!\n");
+        syntreeRelease(syntree);
         exit(EXIT_FAILURE);
     }
     new_node_ptr->number = number;
+    new_node_ptr->nodeType = nodeNumber;
     new_node_ptr->pointer = new_node_ptr;
     new_node_ptr->next = NULL;
     new_node_ptr->capsuled = NULL;
@@ -30,7 +30,6 @@ extern syntree_nid syntreeNodeNumber(syntree_t *syntree, int number) {
 extern void syntreeRelease(syntree_t *syntree) {
     releaseHelper(syntree->root);
 }
-
 
 extern void releaseHelper(syntree_nid *node) {
     if (node->next) {
@@ -50,14 +49,16 @@ extern void releaseHelper(syntree_nid *node) {
 
 extern syntree_nid syntreeNodeTag(syntree_t *syntree, syntree_nid id) {
     syntree_nid *new_node_ptr = malloc(sizeof(syntree_nid));
-    if (! new_node_ptr /*!new_nodes_list*/) {
+    if (! new_node_ptr ) {
         fprintf(stderr, "Error: out of Memory!\n");
+        syntreeRelease(syntree);
         exit(EXIT_FAILURE);
     }
-    new_node_ptr->number = not_set;
+    new_node_ptr->nodeType = nodeTag;
     new_node_ptr->pointer = new_node_ptr;
     new_node_ptr->next = NULL;
     new_node_ptr->capsuled = id.pointer;
+    syntree->root = new_node_ptr;
 
     return *new_node_ptr;
 }
@@ -67,9 +68,10 @@ syntreeNodePair(syntree_t *syntree, syntree_nid id1, syntree_nid id2) {
     syntree_nid *new_node_ptr = malloc(sizeof(syntree_nid));
     if (! new_node_ptr /*!new_nodes_list*/) {
         fprintf(stderr, "Error: out of Memory!\n");
+        syntreeRelease(syntree);
         exit(EXIT_FAILURE);
     }
-    new_node_ptr->number = not_set;
+    new_node_ptr->nodeType = nodeTag;
     new_node_ptr->pointer = new_node_ptr;
     new_node_ptr->capsuled = id1.pointer;
     id1.pointer->next = id2.pointer;
@@ -80,7 +82,7 @@ syntreeNodePair(syntree_t *syntree, syntree_nid id1, syntree_nid id2) {
 extern syntree_nid
 syntreeNodeAppend(syntree_t *syntree, syntree_nid list, syntree_nid elem) {
     //Die übergebene Liste ist ein NodeTag
-    if (list.pointer->number == not_set) {
+    if (list.pointer->nodeType == nodeTag) {
         //gehe bis zum letzten Element
         syntree_nid tab_iterator = *list.pointer->capsuled;
         while (tab_iterator.next != NULL) {
@@ -99,7 +101,7 @@ syntreeNodeAppend(syntree_t *syntree, syntree_nid list, syntree_nid elem) {
 
 extern syntree_nid
 syntreeNodePrepend(syntree_t *self, syntree_nid elem, syntree_nid list) {
-    if (list.pointer->number == not_set) {
+    if (list.pointer->nodeType == nodeTag) {
         elem.pointer->next = list.pointer->capsuled;
         list.pointer->capsuled = elem.pointer;
     } else {
@@ -110,7 +112,7 @@ syntreeNodePrepend(syntree_t *self, syntree_nid elem, syntree_nid list) {
 }
 
 extern void syntreePrint(const syntree_t *self, syntree_nid root) {
-    if (root.number == not_set) {
+    if (root.nodeType == nodeTag) {
         printf("{");
         if (root.capsuled) {
             syntreePrint(self, *root.capsuled);

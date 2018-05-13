@@ -7,19 +7,19 @@
 // Ein enum um einen Typen zu deklarieren um die Knoten unterscheiden zu
 // können.
 typedef enum {
-    value, list
-} bool;
+    nodeNumber, nodeTag
+} identifier;
 
 // Der eigentliche Knoten. Die ID des Knotens ist dabei seine Adresse im RAM.
-// Durch number wird festgelegt, ob es sich um einen "Kapselknoten" (number =
-// not_set = INT_MIN) oder
-// einen Knoten mit einem Integer handelt (number > INT_MIN).
-// capsuled ist das erste Element einer einfach verketteten Liste, die
-// "gekapselte" Knoten enthalten. next ist das erste Element einer einfach
-// verketteten Liste, die auf die Elemente auf gleicher "Ebene" zeigt.
+// Der identifier nodeType beschreibt ob es sich um einen Kapselknoten
+// (NodeTag) oder einen Knoten (Blatt) mit einer Nummer handelt (NodeNumber).
+// capsuled zeigt auf das erste Element, dass in diesem NodeTag gekapselt ist.
+// Die weiteren gekaplseten Elemente werden dann über next angesprochen. Der
+// next Zeiger zeigt auf das nächste Element in der gleichen "Ebene".
 
 typedef struct syntree_nid {
     int number;
+    identifier nodeType;
     struct syntree_nid *pointer;
     struct syntree_nid *next;
     struct syntree_nid *capsuled;
@@ -46,6 +46,12 @@ syntreeInit(syntree_t *self);
  */
 extern void
 syntreeRelease(syntree_t *self);
+
+/**@brief Helper Funktion mit der man rekursiv alle Knoten des Baumes löschen
+ * kann
+ * @param node Ein Zeiger auf einen nachfolgenden Knoten
+ */
+extern void releaseHelper(syntree_nid *node);
 
 /**@brief Erstellt einen neuen Knoten mit einem Zahlenwert als Inhalt.
  * @param self    der Syntaxbaum
