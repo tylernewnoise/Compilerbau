@@ -2,13 +2,33 @@
 #define SYNTREE_H_INCLUDED
 
 /* *** structures *********************************************************** */
-
-typedef /* muss noch definiert werden */ syntree_nid;
-
 /**@brief Struktur des abstrakten Syntaxbaumes.
  */
+// Ein enum um einen Typen zu deklarieren um die Knoten unterscheiden zu
+// können.
+typedef enum {
+    nodeNumber, nodeTag
+} identifier;
+
+// Der eigentliche Knoten. Die ID des Knotens ist dabei seine Adresse im RAM.
+// Der identifier nodeType beschreibt ob es sich um einen Kapselknoten
+// (NodeTag) oder einen Knoten (Blatt) mit einer Nummer handelt (NodeNumber).
+// capsuled zeigt auf das erste Element, dass in diesem NodeTag gekapselt ist.
+// Die weiteren gekaplseten Elemente werden dann über next angesprochen. Der
+// next Zeiger zeigt auf das nächste Element in der gleichen "Ebene".
+
+typedef struct syntree_nid {
+    int number;
+    identifier nodeType;
+    struct syntree_nid *pointer;
+    struct syntree_nid *next;
+    struct syntree_nid *capsuled;
+}syntree_nid;
+
+// Die Grundstruktur des Baumes. Sie enthält einfach nur einen Zeiger zu einer
+// Liste, in der alle Knoten hängen.
 typedef struct {
-    /* hier sollte noch etwas dazu kommen */
+    struct syntree_nid *root;
 } syntree_t;
 
 /* *** interface ************************************************************ */
@@ -26,6 +46,12 @@ syntreeInit(syntree_t *self);
  */
 extern void
 syntreeRelease(syntree_t *self);
+
+/**@brief Helper Funktion mit der man rekursiv alle Knoten des Baumes löschen
+ * kann
+ * @param node Ein Zeiger auf einen nachfolgenden Knoten
+ */
+extern void releaseHelper(syntree_nid *node);
 
 /**@brief Erstellt einen neuen Knoten mit einem Zahlenwert als Inhalt.
  * @param self    der Syntaxbaum
