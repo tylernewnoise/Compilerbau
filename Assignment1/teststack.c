@@ -26,4 +26,3 @@ int main() {
 1
 <<Fehlermeldung, da intstack_t leer>>
 */
-

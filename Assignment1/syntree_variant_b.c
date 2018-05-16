@@ -1,11 +1,11 @@
-#include "syntree.h"
+#include "syntree_variant_b.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
 
 
 extern int syntreeInit(syntree_t *syntree) {
-    if (! syntree) {
+    if (!syntree) {
         return 1;
     }
     syntree->root = NULL;
@@ -14,7 +14,7 @@ extern int syntreeInit(syntree_t *syntree) {
 
 extern syntree_nid syntreeNodeNumber(syntree_t *syntree, int number) {
     syntree_nid *new_node_ptr = malloc(sizeof(syntree_nid));
-    if (! new_node_ptr) {
+    if (!new_node_ptr) {
         fprintf(stderr, "Error: out of Memory!\n");
         syntreeRelease(syntree);
         exit(EXIT_FAILURE);
@@ -41,7 +41,7 @@ extern void releaseHelper(syntree_nid *node) {
         node->capsuled = NULL;
     }
 
-    if (! node->capsuled && ! node->next) {
+    if (!node->capsuled && !node->next) {
         free(node);
         return;
     }
@@ -49,7 +49,7 @@ extern void releaseHelper(syntree_nid *node) {
 
 extern syntree_nid syntreeNodeTag(syntree_t *syntree, syntree_nid id) {
     syntree_nid *new_node_ptr = malloc(sizeof(syntree_nid));
-    if (! new_node_ptr ) {
+    if (!new_node_ptr) {
         fprintf(stderr, "Error: out of Memory!\n");
         syntreeRelease(syntree);
         exit(EXIT_FAILURE);
@@ -66,7 +66,7 @@ extern syntree_nid syntreeNodeTag(syntree_t *syntree, syntree_nid id) {
 extern syntree_nid
 syntreeNodePair(syntree_t *syntree, syntree_nid id1, syntree_nid id2) {
     syntree_nid *new_node_ptr = malloc(sizeof(syntree_nid));
-    if (! new_node_ptr /*!new_nodes_list*/) {
+    if (!new_node_ptr /*!new_nodes_list*/) {
         fprintf(stderr, "Error: out of Memory!\n");
         syntreeRelease(syntree);
         exit(EXIT_FAILURE);

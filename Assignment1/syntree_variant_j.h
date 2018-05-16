@@ -1,34 +1,41 @@
 #ifndef SYNTREE_H_INCLUDED
 #define SYNTREE_H_INCLUDED
 
+/*********************************************************************************************************************
+ *                                                                                                                   *
+ *  Das Struct syntree_nid beinhaltet die int Variable value, in der der Zahlenwert gespeichert wird.                *
+ *  Außerdem beinhaltet es ein Pointer auf sich selbst, da die Funktionsprototypen im Header ein syntree_nid Objekt  *
+ *  uebergeben und nicht ein Pointer auf ein syntree_nid Objekt. Da C alle Funktionsargumente als Call by Value      *
+ *  uebergibt, kann man ueber den self_ptr auf das eigentliche Objekt zugreifen. syntree_nid* next ist ein           *
+ *  Pointer auf das nächste Objekt in der gleichen Ebene der Baumtruktur. syntree_nid* capsuled ist ein Pointer      *
+ *  auf den ersten Kindknoten des Listenknotens. Alle weitere Kindknoten lassen sich erreichen, indem man            *
+ *  den * capsuled Pointer zum ersten Kindknoten folgt und dann ueber den * next Pointer des Kindknotens zum         *
+ *  naechsten kommt, genau wie bei einer einfach verketteten Liste. Zusaezlich gibt es das struct linked_list,       *
+ *  das ausschließlich dazu da ist, alle alloziierten Baum Knoten einem syntree zuzuordnen und spaeter alle          *
+ *  Knoten wieder freizugeben. Da ein Knoten auch ertsellt werden kann ohne ihn im Baum "einzuhaengen", ist          *
+ *  dieser Schritt notwendig um Memory Leaks zu vermeiden.                                                           *
+ *                                                                                                                   *
+ *********************************************************************************************************************/
+
 /* *** structures *********************************************************** */
+
+typedef struct nid {
+    int value;
+    struct nid *self_ptr;
+    struct nid *next;
+    struct nid *capsuled;
+} syntree_nid;
+
+
+struct linked_list {
+    syntree_nid *ptr_value;
+    struct linked_list *next;
+};
+
 /**@brief Struktur des abstrakten Syntaxbaumes.
  */
-// Ein enum um einen Typen zu deklarieren um die Knoten unterscheiden zu
-// können.
-typedef enum {
-    nodeNumber, nodeTag
-} identifier;
-
-// Der eigentliche Knoten. Die ID des Knotens ist dabei seine Adresse im RAM.
-// Der identifier nodeType beschreibt ob es sich um einen Kapselknoten
-// (NodeTag) oder einen Knoten (Blatt) mit einer Nummer handelt (NodeNumber).
-// capsuled zeigt auf das erste Element, dass in diesem NodeTag gekapselt ist.
-// Die weiteren gekaplseten Elemente werden dann über next angesprochen. Der
-// next Zeiger zeigt auf das nächste Element in der gleichen "Ebene".
-
-typedef struct syntree_nid {
-    int number;
-    identifier nodeType;
-    struct syntree_nid *pointer;
-    struct syntree_nid *next;
-    struct syntree_nid *capsuled;
-}syntree_nid;
-
-// Die Grundstruktur des Baumes. Sie enthält einfach nur einen Zeiger zu einer
-// Liste, in der alle Knoten hängen.
 typedef struct {
-    struct syntree_nid *root;
+    struct linked_list *root;
 } syntree_t;
 
 /* *** interface ************************************************************ */
@@ -46,12 +53,6 @@ syntreeInit(syntree_t *self);
  */
 extern void
 syntreeRelease(syntree_t *self);
-
-/**@brief Helper Funktion mit der man rekursiv alle Knoten des Baumes löschen
- * kann
- * @param node Ein Zeiger auf einen nachfolgenden Knoten
- */
-extern void releaseHelper(syntree_nid *node);
 
 /**@brief Erstellt einen neuen Knoten mit einem Zahlenwert als Inhalt.
  * @param self    der Syntaxbaum
@@ -78,7 +79,7 @@ syntreeNodeTag(syntree_t *self, syntree_nid id);
 extern syntree_nid
 syntreeNodePair(syntree_t *self, syntree_nid id1, syntree_nid id2);
 
-/**@brief Hängt einen Knoten an das Ende eines Listenknotens.
+/**@brief Haengt einen Knoten an das Ende eines Listenknotens.
  * @param self  der Syntaxbaum
  * @param list  Listenknoten
  * @param elem  anzuhängender Knoten

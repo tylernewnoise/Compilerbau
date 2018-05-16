@@ -7,4 +7,5 @@ set(GCC_COVERAGE_COMPILE_FLAGS "-Wall -pedantic")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 
 add_executable(Stack Assignment1/teststack.c Assignment1/stack.c)
-add_executable(Syntree Assignment1/testsyntree.c Assignment1/syntree.c)
+add_executable(Syntree_B Assignment1/testsyntree_b.c Assignment1/syntree_variant_b.c)
+add_executable(Syntree_J Assignment1/testsyntree_j.c Assignment1/syntree_variant_j.c)

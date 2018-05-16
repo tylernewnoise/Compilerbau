@@ -1,4 +1,4 @@
-#include "syntree.h"
+#include "syntree_variant_b.h"
 #include <stdio.h>
 
 int main() {
@@ -9,7 +9,7 @@ int main() {
 
     id = syntreeNodeTag(&tree, syntreeNodeNumber(&tree, 0));
 
-    for (unsigned int i = 1; i < 10; ++ i) {
+    for (unsigned int i = 1; i < 10; ++i) {
         switch (i % 3) {
             case 0:
                 id = syntreeNodePair(&tree, syntreeNodeNumber(&tree, i), id);
