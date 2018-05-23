@@ -1,5 +1,10 @@
+/* Options */
+
 %option yylineno
 %option noyywrap
+%option nodefault
+
+/* C - Code */
 
 %{
 
@@ -12,14 +17,14 @@ yystype yylval;
 
 WHITESPACE [ \t\n\r]
 INTEGER [[:digit:]]+
-FLOAT [[:digit:]]+
+FLOAT {INTEGER}"."{INTEGER}
 ALNUM [[:alnum:]]
 
 /* States */
 
 %x COMMENT_FIELD
 %x COMMENT_LINE
-%s INT
+%x STRING
 
 %%
 
@@ -27,7 +32,8 @@ ALNUM [[:alnum:]]
 <COMMENT_FIELD>"*/"     {BEGIN(INITIAL);}
 <COMMENT_LINE>.         {}
 <COMMENT_LINE>"\n"      {BEGIN(INITIAL);}
-<INT>{INTEGER}          {yylval.intValue = atoi(yytext); return CONST_INT;}
+<STRING>[^\"]*          {yylval.string = yytext; return CONST_STRING;}
+<STRING>\"              {BEGIN(INITIAL);}
 
 "/*"            {BEGIN(COMMENT_FIELD);}
 "//"            {BEGIN(COMMENT_LINE);}
@@ -45,55 +51,19 @@ else            {return KW_ELSE;}
 float           {return KW_FLOAT;}
 for             {return KW_FOR;}
 if              {return KW_IF;}
-int             {BEGIN(INT); return KW_INT;}
+int             {return KW_INT;}
 printf          {return KW_PRINTF;}
 return          {return KW_RETURN;}
 void            {return KW_VOID;}
 while           {return KW_WHILE;}
-"const float"   {return CONST_FLOAT;}
-"const bool"    {return CONST_BOOLEAN;}
-"const string"  {return CONST_STRING;}
+true            {yylval.intValue = 1; return CONST_BOOLEAN;}
+false           {yylval.intValue = 0; return CONST_BOOLEAN;}
+\"              {BEGIN(STRING);}
+{INTEGER}       {yylval.intValue = atoi(yytext); return CONST_INT;}
+{FLOAT}         {yylval.floatValue = atof(yytext); return CONST_FLOAT;}
 {ALNUM}*        {yylval.string = yytext; return ID;}
-[(),\{\}=\+-]   {return (char)*yytext;}
-;               {BEGIN(INITIAL); return (char)*yytext;}
+[(),\{\}=\+-;]  {return (char)*yytext;}
 {WHITESPACE}    {}
-
-
+.               {printf("Error: '%c' is not part of the language C1\n",*yytext); exit(1);}
 
 %%
-
-int main() {
-int token;
-while ((token = yylex())) {
-printf("Line: %3d\t", yylineno);
-switch (token)
-{
-case ID:
-printf("ID:     %s\n", yylval.string);
-break;
-
-case CONST_BOOLEAN:
-printf("BOOL:   %s\n", yylval.intValue ? "true" : "false");
-break;
-
-case CONST_INT:
-printf("INT:    %d\n", yylval.intValue);
-break;
-
-case CONST_FLOAT:
-printf("FLOAT:  %g\n", yylval.floatValue);
-break;
-
-case CONST_STRING:
-printf("STRING: %s\n", yylval.string);
-break;
-
-default:
-if (token <= 255)
-printf("Token: '%c'\n", token);
-else
-printf("Token: %d\n", token);
-}
-}
-return 0;
-}
