@@ -1,0 +1,96 @@
+******************************************************************************
+*   Grammatik für die Sprache C-1 (Link weiter unten) ohne Linksrekursion.   *
+*   Token innerhalb "" oder <> Klammern sind Terminalsymbole, alles andere   *
+*   Nichtterminalsymbole. Das € Zeichen steht für Epsilon.                   *
+*                                                                            *
+*   https://amor.cms.hu-berlin.de/~kunert/lehre/material/c-1-grammar.php     *
+******************************************************************************
+
+
+program               ::= A <EOF>
+A                     ::= functiondefinition A
+                      |   €
+functiondefinition    ::= type <ID> "(" ")" "{" statementlist "}"
+functioncall 	        ::= <ID> "(" ")"
+statementlist 	      ::= B
+B                     ::= block B
+                      |   €
+block                 ::= "{" statementlist "}"
+                      |   statement
+statement 	          ::= ifstatement
+                      | 	returnstatement ";"
+                    	| 	printf ";"
+                    	| 	statassignment ";"
+                    	| 	functioncall ";"
+ifstatement 	        ::= <KW_IF> "(" assignment ")" block
+returnstatement 	    ::= <KW_RETURN> C
+C                     ::= assignment
+                      |   €
+printf 	              ::= <KW_PRINTF> "(" assignment ")"
+type 	                ::= <KW_BOOLEAN>
+	                    | 	<KW_FLOAT>
+	                    | 	<KW_INT>
+	                    | 	<KW_VOID>
+statassignment 	      ::= <ID> "=" assignment
+assignment 	          ::= <ID> "=" assignment
+                      |   expr
+expr 	                ::= simpexpr D
+D                     ::= E simpexpr
+                      |   €
+E                     ::= "=="
+                      |   "!="
+                      |   "<="
+                      |   ">="
+                      |   "<"
+                      |   ">"
+simpexpr 	            ::= F term H
+F                     ::= "-"
+                      |   €
+G                     ::= "+"
+                      |   "-"
+                      |   "||"
+H                     ::= G term H
+                      |   €
+term 	                ::= factor J
+I                     ::= "*"
+                      |   "/"
+                      |   "&&"
+J                     ::= I factor J
+                      |   €
+factor 	              ::= <CONST_INT>
+                      | 	<CONST_FLOAT>
+                    	| 	<CONST_BOOLEAN>
+                    	| 	functioncall
+                    	| 	<ID>
+                    	| 	"(" assignment ")"
+
+________________________________________________________________________________
+
+Nichtterminal                 First                   Follow
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+program                       TODO                    TODO
+A
+functiondefinition
+functioncall
+statementlist
+B
+block
+statement
+ifstatement
+returnstatement
+C
+printf
+type
+statassignment
+assignment
+expr
+D
+E
+simpexpr
+F
+G
+H
+term
+I
+J
+factor
