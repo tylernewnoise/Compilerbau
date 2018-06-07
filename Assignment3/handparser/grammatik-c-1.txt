@@ -21,7 +21,7 @@ statement 	          ::= ifstatement
                       | 	returnstatement ";"
                     	| 	printf ";"
                     	| 	statassignment ";"
-                    	| 	functioncall ";"
+                      |   functioncall ";"
 ifstatement 	        ::= <KW_IF> "(" assignment ")" block
 returnstatement 	    ::= <KW_RETURN> C
 C                     ::= assignment
@@ -66,31 +66,66 @@ factor 	              ::= <CONST_INT>
 
 ________________________________________________________________________________
 
-Nichtterminal                 First                   Follow
+Nichtterminalsymbol       First
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-program                       TODO                    TODO
-A
-functiondefinition
-functioncall
-statementlist
-B
-block
-statement
-ifstatement
-returnstatement
-C
-printf
-type
-statassignment
-assignment
-expr
-D
-E
-simpexpr
-F
-G
-H
-term
-I
-J
-factor
+program                   <KW_BOOLEAN>,<KW_FLOAT>,<KW_INT>,<KW_VOID>,<EOF>
+A                         €,<KW_BOOLEAN>,<KW_FLOAT>,<KW_INT>,<KW_VOID>
+functiondefinition        <KW_BOOLEAN>,<KW_FLOAT>,<KW_INT>,<KW_VOID>
+functioncall              <ID>
+statementlist             €,"{",<KW_IF>,<KW_RETURN>,<KW_PRINTF>,<ID>
+B                         €,"{",<KW_IF>,<KW_RETURN>,<KW_PRINTF>,<ID>
+block                     "{",<KW_IF>,<KW_RETURN>,<KW_PRINTF>,<ID>
+statement                 <KW_IF>,<KW_RETURN>,<KW_PRINTF>,<ID>
+K                         "=","("
+ifstatement               <KW_IF>
+returnstatement           <KW_RETURN>
+C                         €,<ID>,"-",<CONST_INT>,<CONST_FLOAT>,<CONST_BOOLEAN>,<ID>,"("
+printf                    <KW_PRINTF>
+type                      <KW_BOOLEAN>,<KW_FLOAT>,<KW_INT>,<KW_VOID>
+statassignment            <ID>
+assignment                <ID>,"-",<CONST_INT>,<CONST_FLOAT>,<CONST_BOOLEAN>,<ID>,"("
+expr                      "-",<CONST_INT>,<CONST_FLOAT>,<CONST_BOOLEAN>,<ID>,"("
+D                         €,"==","!=","<=",">=","<",">"
+E                         "==","!=","<=",">=","<",">"
+simpexpr                  "-",<CONST_INT>,<CONST_FLOAT>,<CONST_BOOLEAN>,<ID>,"("
+F                         €,"-"
+G                         "||","-","+"
+H                         €,"||","-","+"
+term                      <CONST_INT>,<CONST_FLOAT>,<CONST_BOOLEAN>,<ID>,"("
+I                         "*","/","&&"
+J                         €,"*","/","&&"
+factor                    <CONST_INT>,<CONST_FLOAT>,<CONST_BOOLEAN>,<ID>,"("
+
+
+
+VORSICHT, die FOLLOW Menge ist nicht korrekt
+
+Nichtterminalsymbol       Follow
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+program                   $,
+A                         <EOF>
+functiondefinition        <KW_BOOLEAN>,<KW_FLOAT>,<KW_INT>,<KW_VOID>
+functioncall              ";","*","/","&&"
+statementlist             "}"
+B                         "}"
+block                     "{",<KW_IF>,<KW_RETURN>,<KW_PRINTF>,<ID>,"}"
+statement                 "{",<KW_IF>,<KW_RETURN>,<KW_PRINTF>,<ID>
+K                         ";"
+ifstatement               "}"
+returnstatement           ";"
+C                         ";"
+printf                    ";"
+type                      <ID>
+statassignment            ";"
+assignment                ")",";"
+expr                      ")",";"
+D                         ")",";"
+E                         "-",<CONST_INT>,<CONST_FLOAT>,<CONST_BOOLEAN>,<ID>,"("
+simpexpr                  "==","!=","<=",">=","<",">",")",";"
+F                         <CONST_INT>,<CONST_FLOAT>,<CONST_BOOLEAN>,<ID>,"("
+G                         <CONST_INT>,<CONST_FLOAT>,<CONST_BOOLEAN>,<ID>,"("
+H                         "||","-","+","==","!=","<=",">=","<",">",")",";"
+term                      "||","-","+","==","!=","<=",">=","<",">",")",";"
+I                         <CONST_INT>,<CONST_FLOAT>,<CONST_BOOLEAN>,<ID>,"("
+J                         "||","-","+","==","!=","<=",">=","<",">",")",";"
+factor                    "*","/","&&"
