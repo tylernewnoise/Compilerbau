@@ -3,6 +3,8 @@
 
 %code requires {
 	#include <stdio.h>
+	#include <stdlib.h>
+
 
 	extern void yyerror(const char*);
 	extern FILE* yyin;
@@ -43,6 +45,9 @@
 %token CONST_BOOLEAN "boolean literal"
 %token CONST_STRING  "string literal"
 %token ID            "identifier"
+
+%nonassoc						 LOWER_THAN_ELSE
+%nonassoc						 KW_ELSE
 
 %%
 
@@ -95,10 +100,9 @@ statement							: ifstatement
 statblock							: '{' statementlist '}'
 											| statement
 											;
-ifstatement 	        : KW_IF '(' assignment ')' statblock statblock_p
+ifstatement 	        : KW_IF '(' assignment ')' statblock 	%prec LOWER_THAN_ELSE
 											;
-statblock_p           : KW_ELSE statblock
-											| /*epsilon*/
+											| KW_IF '(' assignment ')' statblock KW_ELSE statblock
 											;
 forstatement          : KW_FOR '(' forstatement_o ';' expr ';' statassignment ')' statblock
 											;
@@ -179,7 +183,17 @@ id                    : ID
 
 %%
 
-int main() {
+int main(int argc, char *argv[]) {
+	if (argc != 2)
+		yyin = stdin;
+	else {
+		yyin = fopen(argv[1], "r");
+		if (yyin == 0)
+		{
+				fprintf(stderr, "Fehler: Konnte Datei %s nicht zum lesen oeffnen.\n", argv[1]);
+				exit(-1);
+		}
+	}
 	yydebug=1;
 	return yyparse();
 }
