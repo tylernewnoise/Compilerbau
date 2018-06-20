@@ -32,12 +32,12 @@ void main() {
 		do {
 
 			printf(i);
-			
+
 			printf(morgan11(a,b));
 			printf(morgan12(a,b));
 			printf(morgan21(a,b));
 			printf(morgan22(a,b));
-			
+
 			i = i+1;
 			b = not(b);
 		} while (b != true);

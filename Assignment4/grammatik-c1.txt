@@ -7,25 +7,19 @@
 ******************************************************************************
 
 
-program               ::= program_s <EOF>
-program_s             ::= program_c program_s
+program               ::= declassignment ";" program
+                      |   functiondefinition program
                       |   €
-program_c             ::= functiondefinition
-                      |   declassignment ";"
-functiondefinition    ::= type id "(" parameterlist_p ")" "{" statementlist "}"
-parameterlist_p       ::= parameterlist
-                      | €
+functiondefinition    ::= type id "(" parameterlist ")" "{" statementlist "}"
+                      |   type id "(" ")" "{" statementlist "}"
 parameterlist         ::= type id parameterlist_s
 parameterlist_s       ::= "," type id parameterlist_s
                       |   €
-functioncall 	        ::= id "(" functioncall_s ")"
-functioncall_s        ::= functioncall_c
-                      |   €
-functioncall_c        ::= assignment assignment_s
+functioncall 	        ::= id "(" ")"
+                      |   id "(" assignment assignment_s ")"
 assignment_s          ::= "," assignment assignment_s
                       |   €
-statementlist 	      ::= statementlist_s
-statementlist_s       ::= block statementlist_s
+statementlist 	      ::= block statementlist
                       |   €
 block                 ::= "{" statementlist "}"
                       |   statement
@@ -40,23 +34,18 @@ statement 	          ::= ifstatement
                       |   functioncall ";"
 statblock             ::= "{" statementlist "}"
                       |   statement
-ifstatement 	        ::= <KW_IF> "(" assignment ")" statblock statblock_p
-statblock_p           ::= <KW_ELSE> statblock
-                      |   €
-forstatement          ::= <KW_FOR> "(" forstatement_o ";" expr ";" statassignment ")" statblock
-forstatement_o        ::= statassignment
-                      |   declassignment
+ifstatement 	        ::= <KW_IF> "(" assignment ")" statblock
+                      |   <KW_IF> "(" assignment ")" statblock <KW_ELSE> statblock
+forstatement          ::= <KW_FOR> "(" statassignment ";" expr ";" statassignment ")" statblock
+                      |   <KW_FOR> "(" declassignment ";" expr ";" statassignment ")" statblock
 dowhilestatement      ::= <KW_DO> statblock <KW_WHILE> "(" assignment ")"
 whilestatement        ::= <KW_WHILE> "(" assignment ")" statblock
-returnstatement 	    ::= <KW_RETURN> returnstatement_p
-returnstatement_p     ::= assignment
-                      |   €
-printf 	              ::= <KW_PRINTF> "(" printf_o ")"
-printf_o              ::= assignment
-                      |   <CONST_STRING>
-declassignment        ::= type id declassignment_p
-declassignment_p      ::= "=" assignment
-                      |   €
+returnstatement 	    ::= <KW_RETURN> assignment
+                      |   <KW_RETURN>
+printf 	              ::= <KW_PRINTF> "(" assignment ")"
+                      |   <KW_PRINTF> "(" <CONST_STRING> ")"
+declassignment        ::= type id
+                      |   type id "=" assignment
 type 	                ::= <KW_BOOLEAN>
 	                    | 	<KW_FLOAT>
 	                    | 	<KW_INT>
@@ -64,29 +53,24 @@ type 	                ::= <KW_BOOLEAN>
 statassignment 	      ::= id "=" assignment
 assignment 	          ::= id "=" assignment
                       |   expr
-expr 	                ::= simpexpr simpexpr_p
-simpexpr_p            ::= simpexpr_o
+expr 	                ::= simpexpr
+                      |   simpexpr "==" simpexpr
+                      |   simpexpr "!=" simpexpr
+                      |   simpexpr "<=" simpexpr
+                      |   simpexpr ">=" simpexpr
+                      |   simpexpr "<" simpexpr
+                      |   simpexpr ">" simpexpr
+simpexpr 	            ::= "-" term term_s
+                      |   term term_s
+term_s                ::= "+" term term_s
+                      |   "-" term term_s
+                      |   "||" term term_s
                       |   €
-simpexpr_o            ::= "==" simpexpr
-                      |   "!=" simpexpr
-                      |   "<=" simpexpr
-                      |   ">=" simpexpr
-                      |   "<" simpexpr
-                      |   ">" simpexpr
-simpexpr 	            ::= term_o term_s
-term_o                ::= "-" term
-                      |   term
-term_s                ::= term_o2 term_s
-                      |   €
-term_o2               ::= "+" term
-                      |   "-" term
-                      |   "||" term
 term 	                ::= factor factor_s
-factor_s              ::= factor_o factor_s
+factor_s              ::= "*" factor factor_s
+                      |   "/" factor factor_s
+                      |   "&&" factor factor_s
                       |   €
-factor_o              ::= "*" factor
-                      |   "/" factor
-                      |   "&&" factor
 factor 	              ::= <CONST_INT>
                       | 	<CONST_FLOAT>
                     	| 	<CONST_BOOLEAN>

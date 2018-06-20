@@ -51,38 +51,26 @@
 
 %%
 
-program								: program_s
-											;
-program_s							: program_c program_s
+program								: declassignment ';'program
+											|	functiondefinition program
 											| /*epsilon*/
 											;
-program_c							: functiondefinition
-											| declassignment ';'
-											;
-functiondefinition		: type id '(' parameterlist_p ')' '{' statementlist '}'
-											;
-parameterlist_p				: parameterlist
-											| /*epsilon*/
+functiondefinition		: type id '(' parameterlist ')' '{' statementlist '}'
+											|	type id '(' ')' '{' statementlist '}'
 											;
 parameterlist					:	type id parameterlist_s
 											;
 parameterlist_s				: ',' type id parameterlist_s
 											| /*epsilon*/
 											;
-functioncall					: id '(' functioncall_s ')'
-											;
-functioncall_s				: functioncall_c
-											| /*epsilon*/
-											;
-functioncall_c				: assignment assignment_s
+functioncall					: id '(' ')'
+											| id '(' assignment assignment_s ')'
 											;
 assignment_s					: ',' assignment assignment_s
 											| /*epsilon*/
 											;
-statementlist					: statementlist_s
-											;
-statementlist_s				: block statementlist_s
-											| /*epsilon*/
+statementlist					: block statementlist
+											|	/*epsilon*/
 											;
 block									: '{' statementlist '}'
 											| statement
@@ -104,29 +92,21 @@ ifstatement 	        : KW_IF '(' assignment ')' statblock 	%prec LOWER_THAN_ELSE
 											;
 											| KW_IF '(' assignment ')' statblock KW_ELSE statblock
 											;
-forstatement          : KW_FOR '(' forstatement_o ';' expr ';' statassignment ')' statblock
-											;
-forstatement_o				: statassignment
-                      | declassignment
+forstatement          : KW_FOR '(' statassignment ';' expr ';' statassignment ')' statblock
+											|	KW_FOR '(' declassignment ';' expr ';' statassignment ')' statblock
 											;
 dowhilestatement      : KW_DO statblock KW_WHILE '(' assignment ')'
 											;
 whilestatement				: KW_WHILE '(' assignment ')' statblock
 											;
-returnstatement				: KW_RETURN returnstatement_p
+returnstatement				: KW_RETURN assignment
+											|	KW_RETURN
 											;
-returnstatement_p			: assignment
-											| /*epsilon*/
+printf								: KW_PRINTF '(' assignment ')'
+											|	KW_PRINTF '(' CONST_STRING ')'
 											;
-printf								: KW_PRINTF '(' printf_o ')'
-											;
-printf_o              : assignment
-                      | CONST_STRING
-											;
-declassignment        : type id declassignment_p
-											;
-declassignment_p      : '=' assignment
-											| /*epsilon*/
+declassignment        : type id
+											| type id '=' assignment
 											;
 type 	                : KW_BOOLEAN
                     	| KW_FLOAT
@@ -138,38 +118,28 @@ statassignment 	      : id '=' assignment
 assignment 	          : id '=' assignment
 											| expr
 											;
-expr 	                : simpexpr simpexpr_p
+expr 	                : simpexpr
+											| simpexpr EQ simpexpr
+											| simpexpr NEQ simpexpr
+											| simpexpr LEQ simpexpr
+											| simpexpr GEQ simpexpr
+											| simpexpr LSS simpexpr
+											| simpexpr GRT simpexpr
 											;
-simpexpr_p            : simpexpr_o
-											| /*epsilon*/
+simpexpr 	            : '-' term term_s
+											|	term term_s
 											;
-simpexpr_o            : EQ simpexpr
-                      | NEQ simpexpr
-                      | LEQ simpexpr
-                      | GEQ simpexpr
-                      | LSS simpexpr
-                      | GRT simpexpr
-											;
-simpexpr 	            : term_o term_s
-											;
-term_o                : '-' term
-                      | term
-											;
-term_s                : term_o2 term_s
+term_s                : '+' term term_s
+											| '-' term term_s
+											| OR term term_s
                       | /*epsilon*/
-											;
-term_o2               : '+' term
-                      | '-' term
-                      | OR term
 											;
 term 	                : factor factor_s
 											;
-factor_s              : factor_o factor_s
+factor_s              : '*' factor factor_s
+											| '/' factor factor_s
+											|	AND factor factor_s
 											| /*epsilon*/
-											;
-factor_o              : '*' factor
-                      | '/' factor
-                      | AND factor
 											;
 factor 	              : CONST_INT
                       | CONST_FLOAT
@@ -191,13 +161,14 @@ int main(int argc, char *argv[]) {
 		if (yyin == 0)
 		{
 				fprintf(stderr, "Fehler: Konnte Datei %s nicht zum lesen oeffnen.\n", argv[1]);
-				exit(-1);
+				exit(1);
 		}
 	}
-	yydebug=1;
+	//yydebug=1;
 	return yyparse();
 }
 
 void yyerror(const char* msg) {
-		fprintf(stderr, "%s\n",msg);
+		fprintf(stderr, "Line %d: %s\n",yylineno, msg);
+		exit(2);
 }
