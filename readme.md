@@ -4,3 +4,7 @@
 * 02 Lexer
 * 03 LL1-Parser
 * 04 LR1-Parser
+
+Thanks to:
+- https://github.com/Tummetott
+- https://github.com/belorenz
